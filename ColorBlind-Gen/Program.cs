@@ -26,7 +26,7 @@ namespace ColorBlind_Gen
 
         }
         
-        void setup()
+        public void setup()
         {
             size(600, 600);
             smooth();
@@ -57,9 +57,9 @@ namespace ColorBlind_Gen
 
         }
 
-        void draw()
+        public void draw()
         {
-            if (count < circles.length)
+            if (count < circles.Length)
             {
                 circles[count] = new Circle();
                 if (circles[count].overlapsAny())
@@ -105,7 +105,7 @@ namespace ColorBlind_Gen
             lastX = lastY = -1;
         }
 
-        class Point
+        public class Point
         {
             float x, y;
 
@@ -116,7 +116,7 @@ namespace ColorBlind_Gen
             }
         }
 
-        class Circle
+        public class Circle
         {
             float x, y, radius;
             int[] xs, ys;
@@ -149,7 +149,7 @@ namespace ColorBlind_Gen
                 this.ys = ys;
             }
 
-            boolean overlapsMotive()
+            bool overlapsMotive()
             {
                 for (int i = 0; i < xs.length; i++)
                 {
@@ -162,7 +162,7 @@ namespace ColorBlind_Gen
                 return false;
             }
 
-            boolean overlapsAny()
+            bool overlapsAny()
             {
                 for (int i = 0; i < xs.length; i++)
                 {
@@ -181,19 +181,19 @@ namespace ColorBlind_Gen
                 return false;
             }
 
-            boolean intersects(Circle c)
+            bool intersects(Circle c)
             {
                 int dx = int(c.x) - int(x), dy = int(c.y) - int(y);
                 return dx * dx + dy * dy < (c.radius + radius) * (c.radius + radius);
             }
 
-            boolean inside(Circle c)
+            bool inside(Circle c)
             {
                 int dx = int(c.x) - int(x), dy = int(c.y) - int(y);
                 return dx * dx + dy * dy < (c.radius - radius) * (c.radius - radius);
             }
 
-            void draw()
+            public void draw()
             {
                 if (fg < 0) fg = overlapsMotive() ? on[int(random(0, on.length))] : off[int(random(0, off.length))];
 
@@ -204,7 +204,7 @@ namespace ColorBlind_Gen
 
         }
 
-        void keyPressed()
+        public void keyPressed()
         {
             if (key == 's')
             {
@@ -213,14 +213,5 @@ namespace ColorBlind_Gen
         }
 
         int lastX = -1, lastY = -1;
-
-        void mouseClicked()
-        {
-            if (dist(mouseX, mouseY, width * 0.5, height * 0.5) < width * 0.48)
-            {
-                lastX = mouseX;
-                lastY = mouseY;
-            }
-        }
     }
 }
