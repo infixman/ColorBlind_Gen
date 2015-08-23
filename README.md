@@ -1,5 +1,5 @@
 #Color Blind Generator
-Color blind test plates generator.
+Color blind test plates generator. The application take a given image and generate a color blind test plate from that image. This way you can create a test plate not only with numbers or letters, but any shape.
 
 ###Current status
 Adapting Java code.
