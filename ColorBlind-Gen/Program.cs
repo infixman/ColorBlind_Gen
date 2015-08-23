@@ -2,53 +2,64 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace ColorBlind_Gen
 {
     class Program
     {
-        Circle[] circles = new Circle[5000];
+        public static Circle[] circles = new Circle[5000];
+        public static string motiv = string.Empty;
+        public static int count = 0;
+        public static int maxDiameter = 22;
+        public static int minDiameter = 8;
+        public static int lastAdded = 0;
+        public static int lastAddedTimeout = 100;
+        public static Bitmap motive;
+        public static Color[] off, on;
+        public static Bitmap outPutImage;
 
-        String motiv = "dog";
-
-        int count = 0;
-        int maxDiameter = 22;
-        int minDiameter = 8;
-        int lastAdded = 0;
-        int lastAddedTimeout = 100;
-
-        PImage motive;
-
-        color[] off, on;
-
+        /*Args:
+            0. input file path
+            1. output image path
+            2. output image size (WIDTHxHEIGHT)
+        */
         static void Main(string[] args)
         {
-
+            motiv = args[0]; // input image path
+            outPutImage = new Bitmap(Convert.ToInt32(args[2].Split(new char[] { 'x', 'X' })[0]), Convert.ToInt32(args[2].Split(new char[] { 'x', 'X' })[1]));
         }
-        
+
         public void setup()
         {
-            size(600, 600);
-            smooth();
-            background(255);
-            colorMode(RGB);
-            noFill();
-            motive = loadImage(motiv + ".png");
+            //size(600, 600);
+            //smooth();
+            //background(255);
+            //colorMode(RGB);
+            //noFill();
+            motive = new Bitmap(motiv);
 
-            color[] _off = {
+            Color[] _off = {
 // style 1
-   color(#9CA594), color(#ACB4A5), color(#BBB964), color(#D7DAAA), color(#E5D57D), color(#D1D6AF)
+   Color.FromArgb(156, 165, 148),
+                Color.FromArgb(172, 180, 165),
+                Color.FromArgb(187, 185, 100),
+                Color.FromArgb(215, 218, 170),
+                Color.FromArgb(229, 213, 125),
+                Color.FromArgb(209, 214, 175)
 // style 2
-/*     color(#F49427), color(#C9785D), color(#E88C6A), color(#F1B081), 
-     color(#F49427), color(#C9785D), color(#E88C6A), color(#F1B081), 
-     color(#F49427), color(#C9785D), color(#E88C6A), color(#F1B081), color(#FFCE00)*/
+/*     Color(#F49427), Color(#C9785D), Color(#E88C6A), Color(#F1B081), 
+     Color(#F49427), Color(#C9785D), Color(#E88C6A), Color(#F1B081), 
+     Color(#F49427), Color(#C9785D), Color(#E88C6A), Color(#F1B081), Color(#FFCE00)*/
   };
 
-            color[] _on = {
-    color(#F9BB82), color(#EBA170), color(#FCCD84)
-/*    color(#89B270), color(#7AA45E),  color(#B6C674),  color(#7AA45E),  color(#B6C674),  
-    color(#89B270), color(#7AA45E),  color(#B6C674),  color(#7AA45E),  color(#B6C674), 
-     color(#89B270), color(#7AA45E),  color(#B6C674),  color(#7AA45E),  color(#B6C674), color(#FECB05)*/
+            Color[] _on = {
+    Color.FromArgb(249, 187, 130),
+                Color.FromArgb(235, 161, 110),
+                Color.FromArgb(252, 205, 132)
+/*    Color(#89B270), Color(#7AA45E),  Color(#B6C674),  Color(#7AA45E),  Color(#B6C674),  
+    Color(#89B270), Color(#7AA45E),  Color(#B6C674),  Color(#7AA45E),  Color(#B6C674), 
+     Color(#89B270), Color(#7AA45E),  Color(#B6C674),  Color(#7AA45E),  Color(#B6C674), Color(#FECB05)*/
   };
 
             on = _on;
@@ -120,7 +131,7 @@ namespace ColorBlind_Gen
         {
             float x, y, radius;
             int[] xs, ys;
-            color bg = color(255, 255, 255), fg = -1;
+            Color bg = Color.FromArgb(255, 255, 255);
 
             Circle()
             {
@@ -189,7 +200,7 @@ namespace ColorBlind_Gen
 
             bool inside(Circle c)
             {
-                int dx = int(c.x) - int(x), dy = int(c.y) - int(y);
+                int dx = (int)c.x - (int)x, dy = (int)c.y - (int)y;
                 return dx * dx + dy * dy < (c.radius - radius) * (c.radius - radius);
             }
 
@@ -197,19 +208,11 @@ namespace ColorBlind_Gen
             {
                 if (fg < 0) fg = overlapsMotive() ? on[int(random(0, on.length))] : off[int(random(0, off.length))];
 
-                fill(fg);
-                noStroke();
+                //fill(fg);
+                //noStroke();
                 ellipse(x, y, radius * 2, radius * 2);
             }
 
-        }
-
-        public void keyPressed()
-        {
-            if (key == 's')
-            {
-                save("out/" + motiv + ".png");
-            }
         }
 
         int lastX = -1, lastY = -1;
